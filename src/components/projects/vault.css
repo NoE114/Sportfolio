@@ -1,0 +1,237 @@
+/* ==========================================================================
+   CALIBER 03 — CHRONO VAULT
+   An index and a plate. Not a card grid: projects are movement plates on a
+   rail, and opening one is a mechanical shutter rather than a fade.
+   ========================================================================== */
+
+.vault {
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+/* --- Index --- */
+
+.vault__index {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--rule-soft);
+  position: sticky;
+  top: calc(52px + var(--s-5));
+}
+
+.vault__tab {
+  display: grid;
+  gap: 3px;
+  padding: var(--s-4) var(--s-3);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  text-align: start;
+  transition: background var(--t-tick) var(--ease-mech);
+}
+
+.vault__tab:hover {
+  background: var(--bg-plate);
+}
+
+.vault__tab[aria-selected='true'] {
+  background: var(--bg-case);
+  box-shadow: var(--bevel);
+}
+
+.vault__tab-num {
+  font-family: var(--font-mono);
+  font-size: var(--t-h3);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--t-tick) var(--ease-mech);
+}
+
+.vault__tab[aria-selected='true'] .vault__tab-num {
+  color: var(--accent);
+}
+
+.vault__tab-title {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+
+.vault__tab-year {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+}
+
+/* --- The plate --- */
+
+.plate-frame {
+  position: relative;
+  background: var(--bg-case);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-1);
+  box-shadow: var(--bevel);
+  overflow: hidden;
+}
+
+.plate-frame__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+  padding: var(--s-5) clamp(1.25rem, 3vw, 2.25rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.plate-frame__title {
+  font-size: var(--t-h1);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: var(--track-tight);
+  color: var(--ink);
+}
+
+.plate-frame__tag {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-brass);
+  border: 1px solid color-mix(in oklab, var(--accent-brass) 40%, transparent);
+  border-radius: var(--r-1);
+  padding: 3px 6px;
+}
+
+.plate-frame__body {
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  display: grid;
+  gap: var(--s-5);
+}
+
+/* A metrics row. Values are always accompanied by the thing they measure,
+   which is the schema's job — a bare number can never be displayed. */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1px;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-1);
+  overflow: hidden;
+}
+
+.metric {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  background: var(--bg-plate);
+}
+
+.metric__val {
+  font-family: var(--font-mono);
+  font-size: var(--t-h2);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.metric__label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1.3;
+}
+
+.plate-frame__links {
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule-soft);
+}
+
+.plate-frame__notes {
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-inline-size: var(--measure);
+  padding-inline-start: var(--s-4);
+  border-inline-start: 1px solid var(--rule);
+}
+
+/* The shutter. A hard-edged wipe, the way a plate slides into a frame. */
+@keyframes shutter-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.plate-frame[data-shutter='true'] {
+  animation: shutter-in 420ms var(--ease-mech);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate-frame[data-shutter='true'] {
+    animation: none;
+  }
+}
+
+html[data-motion='reduced'] .plate-frame[data-shutter='true'] {
+  animation: none;
+}
+
+/* Coverage statement. Deliberately quiet, and deliberately about the data
+   rather than about the author. */
+.vault__coverage {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule-soft);
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+}
+
+.vault__coverage-note {
+  color: var(--ink-mute);
+  font-size: var(--t-small);
+}
+
+@media (max-width: 900px) {
+  .vault {
+    grid-template-columns: 1fr;
+  }
+
+  .vault__index {
+    position: static;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    overflow-x: auto;
+    border: 1px solid var(--rule-soft);
+    border-radius: var(--r-1);
+  }
+
+  .vault__tab {
+    border-bottom: 0;
+    border-inline-end: 1px solid var(--rule-soft);
+    min-inline-size: 9rem;
+  }
+}

@@ -1,0 +1,225 @@
+/* ==========================================================================
+   CALIBER 04 — FREQUENCY TRANSMITTER
+   A transmission console. Recessed fields, a status line, and two controls.
+   ========================================================================== */
+
+.tx {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.tx__form {
+  display: grid;
+  gap: var(--s-4);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--bg-case);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-1);
+  box-shadow: var(--bevel);
+}
+
+.field {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.field__label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.field__req {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.field__input {
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding: var(--s-3);
+  background: var(--bg-dial);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-2);
+  box-shadow: var(--recess);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  transition: border-color var(--t-tick) var(--ease-mech);
+}
+
+.field__input::placeholder {
+  color: color-mix(in oklab, var(--metal-dim) 70%, transparent);
+}
+
+.field__input:hover {
+  border-color: var(--rule);
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.field__input[aria-invalid='true'] {
+  border-color: #a13b3b;
+}
+
+textarea.field__input {
+  min-block-size: 8rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.field__error {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.06em;
+  color: #c86a6a;
+}
+
+/* The honeypot. Hidden from humans and from assistive technology alike —
+   it exists only to be filled in by bots. */
+.hp {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.tx__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+  padding-top: var(--s-2);
+}
+
+/* --- Status panel --- */
+
+.tx__status {
+  display: grid;
+  gap: var(--s-4);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  background: var(--bg-plate);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-1);
+}
+
+.tx__status-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.tx__steps {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tx__step {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr auto;
+  gap: var(--s-3);
+  align-items: center;
+  padding-block: var(--s-3);
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  transition: color var(--t-state) var(--ease-mech);
+}
+
+.tx__step[data-state='done'] {
+  color: var(--ink-soft);
+}
+
+.tx__step[data-state='active'] {
+  color: var(--accent);
+}
+
+.tx__step[data-state='failed'] {
+  color: #c86a6a;
+}
+
+.tx__step-mark {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: inherit;
+}
+
+.tx__step-note {
+  color: var(--ink-mute);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-align: end;
+}
+
+.tx__meta {
+  display: grid;
+  gap: 1px;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-1);
+  overflow: hidden;
+}
+
+.tx__meta-cell {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  background: var(--bg-case);
+}
+
+.tx__meta-val {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.tx__fallback {
+  font-size: var(--t-small);
+  line-height: 1.55;
+  color: var(--ink-mute);
+}
+
+.tx__direct {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  justify-self: start;
+  transition: color var(--t-tick) var(--ease-mech), border-color var(--t-tick) var(--ease-mech);
+}
+
+.tx__direct:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .tx {
+    grid-template-columns: 1fr;
+  }
+}

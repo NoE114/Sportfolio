@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" data-motion="full">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#060709" />
+    <title>Caliber 00 — Precision over promises</title>
+    <meta
+      name="description"
+      content="A portfolio built as a precision instrument: a stated principle, a measured mechanism, and no claim that cannot be checked."
+    />
+
+    <!--
+      ==========================================================================
+      NETLIFY FORMS — STATIC DECLARATION
+      ==========================================================================
+      Netlify parses the DEPLOYED HTML to register forms. A Vite SPA renders its
+      form client-side, after the build has already been scanned, so a form that
+      only exists in the React tree is never found and submissions 404.
+
+      This hidden form is the declaration. It must stay in the built HTML and it
+      must keep these properties:
+        - the `name` matching the hidden form-name input in the React form
+        - an input `name` for every field in the React form, so the two agree
+        - the honeypot field, so spam is rejected before it is even stored
+
+      DO NOT remove this block, and do not rename the fields without renaming
+      them in src/components/contact/Transmission.tsx as well.
+    -->
+    <form
+      name="frequency-transmitter"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      hidden
+      aria-hidden="true"
+    >
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="subject" />
+      <textarea name="message"></textarea>
+    </form>
+    <script type="module" crossorigin src="/assets/index-1x868VQ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CsLszYjx.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

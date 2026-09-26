@@ -1,0 +1,152 @@
+/* ==========================================================================
+   NAV
+   A fixed instrument header. Carries the identity, the caliber index, and the
+   two controls that are genuinely global: the motion override and the sound
+   toggle. No other controls live here.
+   ========================================================================== */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  background: color-mix(in oklab, var(--bg-void) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-block-size: 52px;
+}
+
+.nav__brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  min-inline-size: 0;
+}
+
+.nav__mark {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav__mark span {
+  color: var(--accent);
+}
+
+.nav__index {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+
+.nav__link {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  text-decoration: none;
+  padding-block: var(--s-2);
+  transition: color var(--t-tick) var(--ease-mech);
+  white-space: nowrap;
+}
+
+.nav__link:hover {
+  color: var(--ink);
+}
+
+.nav__link[aria-current='true'] {
+  color: var(--accent);
+}
+
+/* --- Global controls --- */
+
+.nav__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 32px;
+  padding: 0 var(--s-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-1);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  transition:
+    color var(--t-tick) var(--ease-mech),
+    border-color var(--t-tick) var(--ease-mech);
+}
+
+.toggle:hover {
+  color: var(--ink-soft);
+  border-color: var(--rule);
+}
+
+.toggle[aria-pressed='true'] {
+  color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) 34%, transparent);
+}
+
+.toggle__dot {
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+@media (max-width: 900px) {
+  .nav__index {
+    display: none;
+  }
+}
+
+/* Below this width the brand and the two controls compete for a single line.
+   The control LABELS are kept, because two unlabelled dots are ambiguous and
+   an ambiguous control is worse than a tight one. The labels shorten instead. */
+@media (max-width: 560px) {
+  .nav__inner {
+    gap: var(--s-2);
+  }
+
+  .nav__mark {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .toggle {
+    padding: 0 5px;
+    gap: 4px;
+  }
+
+  .toggle__text {
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .nav__controls {
+    gap: 4px;
+  }
+}

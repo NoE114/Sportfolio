@@ -1,0 +1,405 @@
+/* ==========================================================================
+   CHRONOMETER
+   The dial. Solid fills, hairline weights, and negative space doing most of
+   the work — a real instrument face is mostly empty, and filling it would read
+   as costume rather than as precision.
+   ========================================================================== */
+
+.chrono {
+  /* The dial is sized in its own coordinate space and scaled by its box, so
+     every dimension inside the SVG is in dial units (400 = full width).
+     Height is NOT fixed: the chronograph register is a sibling of the dial
+     inside this box, and a fixed block-size would let it overflow the
+     container and collide with whatever follows. */
+  --size: 420px;
+
+  position: relative;
+  inline-size: var(--size);
+  max-inline-size: 100%;
+  flex: none;
+}
+
+.chrono__dial {
+  inline-size: 100%;
+  block-size: auto;
+  display: block;
+}
+
+/* --- Case and bezel ---------------------------------------------------- */
+.chrono__case {
+  fill: var(--bg-case);
+}
+
+.chrono__case-edge {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.chrono__bezel {
+  fill: var(--bg-plate);
+}
+
+.chrono__bezel-inner {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 0.5;
+}
+
+/* --- Dial face ---------------------------------------------------------
+   Solid. The single radial below is a dial recess — the permitted material
+   shading case — at 3.5% alpha. It is not a background gradient and does not
+   contribute to the identity of the page. */
+.chrono__face {
+  fill: var(--bg-dial);
+}
+
+.chrono__recess {
+  fill: url(#dial-recess);
+  pointer-events: none;
+}
+
+/* --- Graduations ------------------------------------------------------- */
+.chrono__tick {
+  stroke: color-mix(in oklab, var(--metal-dim) 55%, transparent);
+  stroke-width: 0.5;
+  stroke-linecap: butt;
+}
+
+.chrono__tick--5 {
+  stroke: color-mix(in oklab, var(--metal-mid) 78%, transparent);
+  stroke-width: 0.75;
+}
+
+.chrono__index {
+  stroke: var(--metal-mid);
+  stroke-linecap: butt;
+}
+
+.chrono__index--12 {
+  stroke: var(--accent);
+  stroke-width: 2.4;
+}
+
+.chrono__tachy-tick {
+  stroke: color-mix(in oklab, var(--metal-dim) 60%, transparent);
+  stroke-width: 0.5;
+}
+
+.chrono__tachy-tick--major {
+  stroke: var(--metal-mid);
+  stroke-width: 0.75;
+}
+
+.chrono__tachy-tick--medium {
+  stroke: color-mix(in oklab, var(--metal-mid) 80%, transparent);
+  stroke-width: 0.6;
+}
+
+.chrono__tachy-tick--start {
+  stroke: var(--accent-warn);
+  stroke-width: 1;
+}
+
+.chrono__tachy-num {
+  fill: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.chrono__tachy-num--major {
+  fill: var(--metal-mid);
+}
+
+/* --- Engraved dial text ------------------------------------------------ */
+.chrono__mark {
+  fill: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.chrono__mark--accent {
+  fill: var(--accent);
+}
+
+.chrono__mark--spec {
+  font-size: 5.5px;
+  letter-spacing: 0.18em;
+  fill: color-mix(in oklab, var(--metal-dim) 85%, transparent);
+}
+
+/* --- Date window ------------------------------------------------------- */
+.chrono__date-well {
+  fill: var(--bg-void);
+  stroke: var(--rule);
+  stroke-width: 0.5;
+}
+
+.chrono__date {
+  fill: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Open heart -------------------------------------------------------- */
+.chrono__aperture-ring {
+  fill: var(--bg-void);
+  stroke: var(--rule);
+  stroke-width: 0.5;
+}
+
+.chrono__balance {
+  fill: none;
+  stroke: var(--accent-brass);
+  stroke-width: 1.4;
+}
+
+.chrono__balance-spoke {
+  stroke: color-mix(in oklab, var(--accent-brass) 70%, transparent);
+  stroke-width: 0.9;
+}
+
+.chrono__balance-roller {
+  fill: var(--accent-brass);
+}
+
+/* The impulse jewel, the one point of bright colour inside the movement. */
+.chrono__jewel {
+  fill: var(--accent);
+}
+
+/* --- Hands -------------------------------------------------------------
+   Blued steel. Cyan is the accent because blued steel is a real hand
+   finish, not because it is a bright colour. Hand paths are drawn in local
+   coordinates, so nothing here depends on a transform origin. */
+.chrono__hand {
+  transition: opacity var(--t-state) var(--ease-mech);
+}
+
+/* Hour and minute are differentiated by value, not only by length: both are
+   steel, and two identical white hands at different lengths read as an
+   arbitrary pair rather than as an hour and a minute hand. */
+.chrono__hand--hour {
+  fill: var(--metal-mid);
+}
+
+.chrono__hand--minute {
+  fill: var(--metal-hi);
+}
+
+.chrono__hand--second {
+  fill: var(--accent);
+}
+
+.chrono__hand--chrono {
+  fill: var(--accent-warn);
+}
+
+.chrono__cap {
+  fill: var(--bg-case);
+  stroke: var(--rule-strong);
+  stroke-width: 0.5;
+}
+
+.chrono__cap-core {
+  fill: var(--metal-dim);
+}
+
+/* --- Sapphire ----------------------------------------------------------
+   One raking reflection across the crystal. 2% alpha. Present because a
+   dial without one looks printed rather than covered. */
+.chrono__sapphire {
+  fill: url(#sapphire);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   CHRONOGRAPH REGISTER
+   The stopwatch, tachymeter readout and pushers. A machined strip beneath
+   the dial — the instrument's control surface.
+   ========================================================================== */
+
+.register {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  background: var(--bg-case);
+  border: 1px solid var(--rule);
+  border-top: 0;
+  border-radius: 0 0 var(--r-1) var(--r-1);
+  box-shadow: var(--bevel);
+}
+
+.register__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.register__value {
+  font-family: var(--font-mono);
+  font-size: var(--t-readout);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  /* The readout is the one thing that must never reflow. */
+  min-inline-size: 5.5ch;
+  text-align: right;
+}
+
+.register__value--idle {
+  color: var(--ink-mute);
+}
+
+.register__value--running {
+  color: var(--accent);
+}
+
+.register__value--stopped {
+  color: var(--accent-warn);
+}
+
+.register__aux {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+  padding-block: var(--s-2);
+  border-block: 1px solid var(--rule-soft);
+}
+
+.register__aux-cell {
+  display: grid;
+  gap: 3px;
+}
+
+.register__aux-value {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  font-weight: 500;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.register__aux-unit {
+  color: var(--ink-mute);
+  font-size: var(--t-micro);
+  letter-spacing: 0.08em;
+}
+
+/* Chronograph state indicator. One accent, and only on the running state. */
+.register [data-state='running'] {
+  color: var(--accent);
+}
+
+.register [data-state='stopped'] {
+  color: var(--accent-warn);
+}
+
+/* --- Pushers -----------------------------------------------------------
+   Recessed into the case. Travel is 1px on press — a pusher, not a button. */
+.pusher {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-2);
+}
+
+.pusher__btn {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  padding: var(--s-2) var(--s-3);
+  min-block-size: 44px; /* thumb-reachable on touch */
+  background: var(--bg-dial);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  box-shadow: var(--recess);
+  color: var(--ink-soft);
+  transition:
+    transform var(--t-press) var(--ease-mech),
+    box-shadow var(--t-press) var(--ease-mech),
+    border-color var(--t-press) var(--ease-mech),
+    color var(--t-press) var(--ease-mech);
+}
+
+.pusher__btn:hover:not(:disabled) {
+  border-color: var(--rule-strong);
+  color: var(--ink);
+}
+
+.pusher__btn:active:not(:disabled) {
+  /* Pressed into the case: the inset deepens and the face moves down. */
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgb(0 0 0 / 0.7),
+    inset 0 -1px 0 rgb(255 255 255 / 0.03);
+}
+
+.pusher__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pusher__label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.pusher__hint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1;
+}
+
+.pusher__btn--primary {
+  border-color: color-mix(in oklab, var(--accent) 34%, transparent);
+  color: var(--accent);
+}
+
+.pusher__btn--primary:hover:not(:disabled) {
+  border-color: color-mix(in oklab, var(--accent) 58%, transparent);
+}
+
+/* ==========================================================================
+   RESPONSIVE — the pocket instrument
+   On a small screen the dial becomes compact and the register moves beneath
+   it as a full-width control bar. The desktop composition is not scaled down;
+   it is re-laid out around a smaller instrument.
+   ========================================================================== */
+
+@media (max-width: 720px) {
+  .chrono {
+    --size: min(78vw, 300px);
+  }
+
+  .register {
+    gap: var(--s-2);
+    padding: var(--s-3);
+  }
+
+  .register__value {
+    font-size: 1.75rem;
+  }
+}

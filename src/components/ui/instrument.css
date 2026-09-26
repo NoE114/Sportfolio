@@ -1,0 +1,240 @@
+/* ==========================================================================
+   UI PRIMITIVES
+   The small vocabulary the whole page is assembled from. Each is a real
+   instrument part: a plate, a lamp, an engraved section header.
+   ========================================================================== */
+
+.sections {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Section header. The caliber number and title, set like the head of a
+   technical document rather than a marketing section.
+   -------------------------------------------------------------------------- */
+
+.shead {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: var(--s-7);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.shead__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+}
+
+.shead__caliber {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+}
+
+.shead__num {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 3px 6px;
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  border-radius: var(--r-1);
+}
+
+.shead__title {
+  font-size: var(--t-h2);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: var(--track-tight);
+  color: var(--ink);
+}
+
+.shead__note {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* --------------------------------------------------------------------------
+   Indicator lamp. A recessed lens with a state. Used for mechanism status
+   and the contact state machine.
+   -------------------------------------------------------------------------- */
+
+.lamp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.lamp__lens {
+  inline-size: 6px;
+  block-size: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--ink-mute);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.6);
+  transition: background var(--t-tick) var(--ease-mech);
+}
+
+.lamp__lens--ok {
+  background: var(--accent-ok);
+}
+
+.lamp__lens--active {
+  background: var(--accent);
+}
+
+.lamp__lens--warn {
+  background: var(--accent-warn);
+}
+
+.lamp__lens--fail {
+  background: #a13b3b; /* a failure state, desaturated to sit in the palette */
+}
+
+.lamp__text {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Key / value pair. The atom of every specification table on the page.
+   -------------------------------------------------------------------------- */
+
+.kv {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 11rem) 1fr;
+  gap: var(--s-4);
+  align-items: baseline;
+  padding-block: var(--s-3);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.kv__key {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1.4;
+}
+
+.kv__val {
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink);
+  min-inline-size: 0;
+}
+
+.kv__val--mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  letter-spacing: 0.01em;
+}
+
+.kv__val--unrecorded {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+@media (max-width: 640px) {
+  .kv {
+    grid-template-columns: 1fr;
+    gap: var(--s-2);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Buttons. Recessed, mechanical, and quiet. The primary control gets the
+   accent; everything else stays a secondary metal.
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-block-size: 44px;
+  padding: var(--s-3) var(--s-5);
+  background: var(--bg-case);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-2);
+  box-shadow: var(--bevel);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    transform var(--t-press) var(--ease-mech),
+    border-color var(--t-press) var(--ease-mech),
+    color var(--t-press) var(--ease-mech),
+    box-shadow var(--t-press) var(--ease-mech);
+}
+
+.btn:hover {
+  border-color: var(--rule-strong);
+  color: var(--ink);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgb(0 0 0 / 0.65),
+    inset 0 -1px 0 rgb(255 255 255 / 0.03);
+}
+
+.btn--primary {
+  border-color: color-mix(in oklab, var(--accent) 36%, transparent);
+  color: var(--accent);
+}
+
+.btn--primary:hover {
+  border-color: color-mix(in oklab, var(--accent) 62%, transparent);
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Stack / chip list. Used for technology stacks. A chip is a component in a
+   parts tray, not a pill-shaped marketing tag.
+   -------------------------------------------------------------------------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  list-style: none;
+  padding: 0;
+}
+
+.chip {
+  padding: 4px var(--s-2);
+  background: var(--bg-dial);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-1);
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}

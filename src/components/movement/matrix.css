@@ -1,0 +1,345 @@
+/* ==========================================================================
+   GEAR MATRIX
+   The technology stack as a meshing gear train. A mechanical diagram, not a
+   card grid: technologies are components mounted on a plate, and they are
+   connected to each other by drafted leader lines.
+   ========================================================================== */
+
+.matrix {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+  gap: var(--s-5);
+  align-items: start;
+}
+
+.matrix__body {
+  min-inline-size: 0;
+}
+
+.matrix__frame {
+  position: relative;
+  background: var(--bg-case);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-1);
+  box-shadow: var(--bevel);
+  padding: var(--s-5) var(--s-4) var(--s-4);
+  overflow: hidden;
+}
+
+/* --- Side panel --- */
+
+.matrix__panel {
+  display: grid;
+  gap: var(--s-4);
+  align-content: start;
+  min-inline-size: 0;
+}
+
+.matrix__relations {
+  margin: 0;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-1);
+  background: var(--bg-plate);
+  padding: 0 var(--s-4);
+}
+
+.matrix__relations .kv:last-child {
+  border-bottom: 0;
+}
+
+.matrix__details {
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-1);
+  background: var(--bg-plate);
+  padding: var(--s-3) var(--s-4);
+}
+
+.matrix__details summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.matrix__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.matrix__details summary::before {
+  content: '+';
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.matrix__details[open] summary::before {
+  content: '−';
+}
+
+.matrix__relist {
+  display: grid;
+  gap: var(--s-2);
+  margin: var(--s-4) 0 0;
+}
+
+.matrix__rel {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--s-2);
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-block: var(--s-1);
+}
+
+.matrix__rel-from,
+.matrix__rel-to {
+  color: var(--ink-soft);
+}
+
+.matrix__rel-to {
+  text-align: end;
+}
+
+.matrix__rel-label {
+  color: var(--ink-mute);
+  font-size: 8px;
+  white-space: nowrap;
+}
+
+/* The honesty stamp. A schematic of a gear train is a diagram of a layout,
+   not a measurement of a machine, and it says so on its face. Placed above the
+   plate, never inside it, so it cannot collide with a wheel or a component. */
+.matrix__stamp {
+  justify-self: start;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-1);
+  padding: 3px 6px;
+  background: var(--bg-plate);
+}
+
+.matrix__body {
+  display: grid;
+  gap: var(--s-3);
+  align-content: start;
+  min-inline-size: 0;
+}
+
+.matrix__svg {
+  inline-size: 100%;
+  block-size: auto;
+  display: block;
+  margin-inline: auto;
+  /* Capped so the diagram renders at the size it was drawn for. Without this
+     it stretches to the full shell width and the wheels balloon. */
+  max-inline-size: 940px;
+}
+
+/* --- Gears ---
+   The toothed profile is STROKED, not filled. Filling it would flood the whole
+   disc solid and erase the crossings; the fill comes from the body path, which
+   is an annulus plus spokes plus hub, with the areas between spokes left open. */
+.gear__outline {
+  fill: none;
+  stroke: var(--accent-brass);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+
+.gear__body {
+  fill: var(--bg-dial);
+  stroke: var(--accent-brass);
+  stroke-width: 0.8;
+  fill-rule: evenodd;
+}
+
+.gear__hub {
+  fill: var(--bg-void);
+  stroke: var(--accent-brass);
+  stroke-width: 0.8;
+}
+
+.gear__label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  fill: var(--ink-soft);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.gear__teeth {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.1em;
+  fill: var(--ink-mute);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* --- Component markers ---
+   A small mounted part with an index tab, the way a component is identified
+   on an assembly drawing. */
+.comp {
+  cursor: default;
+}
+
+.comp__plate {
+  fill: var(--bg-dial);
+  stroke: var(--rule);
+  stroke-width: 0.75;
+  transition:
+    fill var(--t-tick) var(--ease-mech),
+    stroke var(--t-tick) var(--ease-mech);
+}
+
+.comp__tab {
+  fill: var(--metal-dim);
+  transition: fill var(--t-tick) var(--ease-mech);
+}
+
+.comp__text {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--ink-soft);
+  dominant-baseline: central;
+  transition: fill var(--t-tick) var(--ease-mech);
+  pointer-events: none;
+}
+
+.comp:hover .comp__plate,
+.comp:focus-visible .comp__plate,
+.comp[data-active='true'] .comp__plate {
+  fill: var(--bg-case);
+  stroke: var(--accent);
+}
+
+.comp:hover .comp__tab,
+.comp:focus-visible .comp__tab,
+.comp[data-active='true'] .comp__tab {
+  fill: var(--accent);
+}
+
+.comp:hover .comp__text,
+.comp:focus-visible .comp__text,
+.comp[data-active='true'] .comp__text {
+  fill: var(--accent);
+}
+
+.comp[data-related='true'] .comp__plate {
+  stroke: color-mix(in oklab, var(--accent-brass) 60%, transparent);
+}
+
+.comp[data-related='true'] .comp__tab {
+  fill: var(--accent-brass);
+}
+
+/* Keyboard focus must be visible on the SVG group, so it gets an explicit
+   ring. It must also be invisible by default — an SVG rect with no fill
+   declaration inherits `fill: black` and renders as a black halo around every
+   component plate. */
+.comp__focus {
+  fill: none;
+  stroke: none;
+}
+
+.comp:focus-visible {
+  outline: none;
+}
+
+.comp:focus-visible .comp__focus {
+  stroke: var(--focus);
+  stroke-width: 1;
+}
+
+/* --- Leaders --- */
+
+.leader {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 0.75;
+  opacity: 0.75;
+}
+
+.leader__term {
+  stroke: var(--accent);
+  stroke-width: 0.75;
+  fill: none;
+}
+
+.leader__text {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--accent);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* --- Readout for the hovered component --- */
+
+.matrix__readout {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+  min-block-size: 2.25rem;
+  padding: var(--s-3) var(--s-4);
+  background: var(--bg-plate);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-1);
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.matrix__readout-hint {
+  color: var(--ink-mute);
+}
+
+.matrix__legend {
+  display: flex;
+  gap: var(--s-5);
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.matrix__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.matrix__swatch {
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: var(--r-1);
+  border: 1px solid currentColor;
+}
+
+@media (max-width: 1180px) {
+  .matrix {
+    grid-template-columns: 1fr;
+  }
+}

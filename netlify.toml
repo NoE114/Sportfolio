@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Netlify Forms requires automatic form detection to be ON in the Netlify UI
+# (Site configuration -> Forms -> Enable form detection). The hidden static form
+# declaration in index.html is what the build parses to register the form.
+#
+# The netlify CLI is only needed for local form testing (`netlify dev`).
+# Deploying via the Netlify git integration needs nothing extra.

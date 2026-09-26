@@ -1,0 +1,207 @@
+/* ==========================================================================
+   CALIBER 00 — THE HERO
+   Two columns: identity on the left, instrument on the right. The instrument
+   is present and immediate, but it does not take the composition — the
+   headline and the calls to action hold the larger share of the frame.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  padding-block: clamp(2.5rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem);
+  border-top: 1px solid transparent;
+  scroll-margin-top: 52px;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-areas:
+    'lead instrument'
+    'rest instrument';
+  gap: 0 clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+/* --- Identity column --- */
+
+.hero__lead {
+  grid-area: lead;
+  display: grid;
+  gap: var(--s-5);
+  align-content: end;
+  padding-bottom: var(--s-2);
+  min-inline-size: 0;
+}
+
+.hero__rest {
+  grid-area: rest;
+  display: grid;
+  gap: var(--s-5);
+  align-content: start;
+  min-inline-size: 0;
+}
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.hero__eyebrow::after {
+  content: '';
+  flex: 1;
+  block-size: 1px;
+  background: var(--rule-soft);
+  max-inline-size: 12rem;
+}
+
+.hero__name {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.hero__title {
+  font-size: var(--t-hero);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.hero__title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hero__lead-line {
+  font-size: var(--t-h3);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  max-inline-size: 44ch;
+}
+
+.hero__statement {
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink-mute);
+  max-inline-size: var(--measure);
+  padding-inline-start: var(--s-4);
+  border-inline-start: 1px solid var(--rule);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+/* --- Instrument column --- */
+
+.hero__instrument {
+  grid-area: instrument;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-inline-size: 0;
+}
+
+/* The dial and its register are one object: no gap, no floating card. */
+.hero__chrono {
+  --chrono-size: clamp(320px, 34vw, 470px);
+  width: 100%;
+  max-inline-size: 100%;
+}
+
+.hero__chrono .chrono {
+  margin-inline: auto;
+}
+
+.hero__telemetry {
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+/* --- Scroll affordance ---
+   An indicator, not an invitation to scroll. Sits on the baseline of the
+   composition and is the quietest element in the hero. */
+.hero__cue {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+  color: var(--ink-mute);
+}
+
+.hero__cue-track {
+  position: relative;
+  inline-size: 1px;
+  block-size: 2.5rem;
+  background: var(--rule-soft);
+  overflow: hidden;
+}
+
+.hero__cue-track::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  block-size: 40%;
+  background: var(--accent);
+  animation: cue-travel 2.6s var(--ease-mech) infinite;
+}
+
+@keyframes cue-travel {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(250%);
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE — the pocket instrument
+   The order becomes: who this is → the thesis → the instrument → the supporting
+   copy and the calls to action. The chronometer moves directly under the
+   headline so that time is still immediately legible, but the reader is not
+   made to look at a dial before learning whose page this is.
+   ========================================================================== */
+
+@media (max-width: 980px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'lead'
+      'instrument'
+      'rest';
+    gap: var(--s-6);
+  }
+
+  .hero__lead {
+    align-content: start;
+  }
+
+  .hero__chrono {
+    --chrono-size: min(74vw, 340px);
+  }
+
+  .hero__rest {
+    gap: var(--s-5);
+  }
+}
+
+@media (max-width: 520px) {
+  .hero__title {
+    line-height: 0.95;
+  }
+
+  .hero__actions .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
